@@ -12,7 +12,8 @@
 
                 <!-- Image Section -->
                 <v-col cols="12" md="5" class="d-flex align-center justify-center">
-                    <img src="./../assets/images/xx.jpg" alt="Khaled Hassan" class="w-75 h-50 rounded" loading="lazy">
+                    <img src="./../assets/images/WhatsApp Image 2025-01-30 at 13.30.42_56be2f17.jpg" alt="Khaled Hassan"
+                        class="w-75 h-50 rounded" loading="lazy">
                 </v-col>
             </v-row>
         </v-container></v-app>
