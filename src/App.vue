@@ -119,7 +119,7 @@ export default {
     </v-container>
 
     <myInfoCom class="bg-none" lazy />
-    <about class="bg-none h-screen" />
+    <about class="bg-none h-screen" style="min-height: fit-content;" />
     <skills class="bg-none h-screen" />
   </v-app>
 </template>
