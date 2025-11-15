@@ -33,4 +33,8 @@
     background-color: none !important;
 
 }
+
+img {
+    max-width: 400px;
+}
 </style>

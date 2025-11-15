@@ -2,6 +2,7 @@
 import myInfoCom from './components/myInfo.vue';
 import about from './components/about.vue';
 import skills from './components/skills.vue';
+import projects from './components/projects.vue';
 
 export default {
   data() {
@@ -13,7 +14,7 @@ export default {
   components: {
 
     myInfoCom,
-    about, skills
+    about, skills, projects
   }
   ,
 
@@ -21,9 +22,9 @@ export default {
 
     this.vantaEffect = window.VANTA.TOPOLOGY({
       el: document.getElementById("vanta"),
-      mouseControls: true,
-      touchControls: true,
-      gyroControls: true,
+      mouseControls: false,
+      touchControls: false,
+      gyroControls: false,
       minHeight: 200.0,
       minWidth: 200.0,
       scale: 1.0,
@@ -97,20 +98,25 @@ export default {
       </v-row>
 
       <!-- Mobile Hamburger -->
-      <v-menu class="d-md-none w-100" v-model="drawer" location="end" transition="slide-y-transition"
-        :close-on-content-click="false" style="width: 100%;">
+      <v-menu class="d-md-none w-100 w-screen" v-model="drawer" location="end" :close-on-content-click="false">
         <template #activator="{ props }" class="d-none">
           <v-btn icon v-bind="props" class="d-md-none">
             <v-icon>mdi-menu</v-icon>
           </v-btn>
         </template>
-        <v-list>
-          <v-list-item href="#">Home</v-list-item>
-          <v-list-item href="#About">About</v-list-item>
-          <v-list-item href="#Skills">Skills</v-list-item>
-          <v-list-item href="#Projects">Projects</v-list-item>
-          <v-list-item href="#Contact">Contact</v-list-item>
-        </v-list>
+        <div class="w-screen" style="width: 100vw;top:25px !important;position: absolute;
+    width: 100vw;
+    top: 9px !important;
+    right: -52px;">
+
+          <v-list>
+            <v-list-item href="#">Home</v-list-item>
+            <v-list-item href="#About">About</v-list-item>
+            <v-list-item href="#Skills">Skills</v-list-item>
+            <v-list-item href="#Projects">Projects</v-list-item>
+            <v-list-item href="#Contact">Contact</v-list-item>
+          </v-list>
+        </div>
       </v-menu>
     </v-app-bar>
     <v-container class="bg-none">
@@ -120,7 +126,8 @@ export default {
 
     <myInfoCom class="bg-none" lazy />
     <about class="bg-none h-screen" style="min-height: 100vh;" />
-    <skills class="bg-none h-screen" />
+    <skills class="bg-none fil-content" />
+    <projects class="bg-none h-screen" />
   </v-app>
 </template>
 <style scoped>
@@ -151,7 +158,12 @@ export default {
 }
 
 .v-overlay__content {
+  position: fixed;
   width: 100% !important;
   top: 25px !important;
+}
+
+.v-list {
+  width: 100% !important;
 }
 </style>
