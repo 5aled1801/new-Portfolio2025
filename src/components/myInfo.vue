@@ -5,7 +5,7 @@
                 <!-- Text Section -->
                 <v-col cols="12" md="7" class="d-flex align-center justify-center ">
                     <div class="text text-center">
-                        <h1 class="text-h2 text-md-h1">Khaled Hassan</h1>
+                        <h1 class="text-h3 text-md-h1 bold">Khaled Hassan</h1>
                         <h1 class="text-h4 text-md-h3">Front-End Developer </h1>
                     </div>
                 </v-col>
