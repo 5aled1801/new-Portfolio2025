@@ -3,18 +3,20 @@ import myInfoCom from './components/myInfo.vue';
 import about from './components/about.vue';
 import skills from './components/skills.vue';
 import projects from './components/projects.vue';
+import contact from './components/contact.vue';
 
 export default {
   data() {
+
     return {
       drawer: false,
-      vantaEffect: null
+      vantaEffect: null,
     };
   },
   components: {
 
     myInfoCom,
-    about, skills, projects
+    about, skills, projects, contact
   }
   ,
 
@@ -31,7 +33,9 @@ export default {
       scaleMobile: 1.0,
       color: 0x1da4ff,
       backgroundColor: 0x000000
-    });
+    },
+      this.view = true
+    );
 
   },
   beforeUnmount() {
@@ -42,7 +46,7 @@ export default {
 
 
 <template>
-  <v-app style="background: none;" lazy>
+  <v-app style="background: none;">
 
     <v-app-bar app color="indigo" dark>
       <!-- Logo -->
@@ -124,10 +128,11 @@ export default {
 
     </v-container>
 
-    <myInfoCom class="bg-none" lazy />
+    <myInfoCom class="bg-none" loading="lazy" />
     <about class="bg-none h-screen" style="min-height: 100vh;" />
     <skills class="bg-none fil-content" />
-    <projects class="bg-none h-screen" />
+    <projects class="bg-none fil-content" />
+    <contact class="bg-none fil-content" />
   </v-app>
 </template>
 <style scoped>
