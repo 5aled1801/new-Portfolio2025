@@ -2,7 +2,7 @@
     <v-container class="text-white relative" id="About">
         <v-row class="align-center justify-space-between absolute fil col-reverse mt-16">
             <h1 class="text-h4 text-center my-2 py-16 w-100">About </h1>
-            <h1 class="text-h5" style="https://khaled-hassan.vercel.app/">
+            <h1 style="padding: 10px;font-size: 16px;line-height: 1.6;">
                 I am a Front-End Developer specializing in modern web technologies including HTML5, CSS, Sass,
                 JavaScript, Vue.js, Vuetify, Bootstrap, Tailwind CSS, Pinia, Vuex, and Nuxt.js. My expertise lies in
                 crafting responsive, interactive, and scalable web applications that deliver exceptional user
