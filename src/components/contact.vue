@@ -5,7 +5,7 @@
     <div class="shape shape2"></div>
     <div class="shape shape3"></div>
 
-    <v-container>
+    <v-container class="mt-10">
 
         <h2 class="contact-title">Let's Work Together</h2>
 
