@@ -4,6 +4,11 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 
+import { inject } from '@vercel/analytics'
+
+inject()
+
+
 // vuetify 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
