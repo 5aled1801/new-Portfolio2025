@@ -1,4 +1,4 @@
-<template id="contact">
+<template id="Contact">
 
     <!-- Background Shapes -->
     <div class="shape shape1"></div>

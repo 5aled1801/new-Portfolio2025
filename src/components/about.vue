@@ -22,6 +22,8 @@
                 If you're looking for a dedicated front-end developer to bring your ideas to life, I’d love the chance
                 to collaborate with you and help build something exceptional
             </h1>
+            <a href="/Khaled Hassan cv.pdf" download
+                style="color: white; margin:auto;margin-top:50px"><v-icon>mdi-folder</v-icon> Download CV</a>
         </v-row>
     </v-container>
 

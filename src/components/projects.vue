@@ -188,15 +188,17 @@ export default {
     width: 90%;
     min-width: 90%;
     max-height: 350px;
-    min-height: 300px;
+    min-height: 350px;
     overflow: hidden;
     position: relative;
+    margin: auto;
 }
 
 .ph img {
     width: 100%;
     left: 0;
     transition: transform 4s ease;
+    height: 100%;
 }
 
 img:hover {
