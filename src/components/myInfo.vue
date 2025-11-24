@@ -1,6 +1,6 @@
 <template>
-    <v-app style="background: none;">
-        <v-container class="text-white relative  app h-screen ">
+    <v-app style="background: none; ">
+        <v-container class="text-white relative  app h-screen file-content" id="MyInfo">
             <v-row class="align-center justify-space-between absolute fil col-reverse mt-16">
                 <!-- Text Section -->
                 <v-col cols="12" md="7" class="d-flex align-center justify-center ">
@@ -11,7 +11,7 @@
                 </v-col>
 
                 <!-- Image Section -->
-                <v-col cols="12" md="5" class="d-flex align-center justify-center">
+                <v-col cols="12" md="5" class="d-flex align-center justify-center h-25 h-md-25 max-w-sm-50">
                     <img src="./../assets/images/zzzzzzzzz.png" alt="Khaled Hassan" class="w-100 h-50 rounded"
                         loading="lazy">
                 </v-col>
@@ -37,5 +37,22 @@
 
 img {
     max-width: 92%;
+
+}
+
+@media (max-width: 960px) {
+    img {
+        max-width: 49%;
+
+    }
+
+}
+
+@media (max-width: 600px) {
+    img {
+        max-width: 80%;
+
+    }
+
 }
 </style>

@@ -22,6 +22,18 @@ export default {
 
   mounted() {
 
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        console.log("Latitude:", position.coords.latitude);
+        console.log("Longitude:", position.coords.longitude);
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+      }
+    );
+
+
+
     this.vantaEffect = window.VANTA.TOPOLOGY({
       el: document.getElementById("vanta"),
       mouseControls: false,
@@ -128,8 +140,8 @@ export default {
 
     </v-container>
 
-    <myInfoCom class="bg-none" loading="lazy" />
-    <about class="bg-none h-screen" style="min-height: 100vh;" />
+    <myInfoCom class="bg-none fil-content" loading="lazy" />
+    <about class="bg-none h-screen fil-content" style="min-height: 100vh;" />
     <skills class="bg-none fil-content" />
     <projects class="bg-none fil-content" />
     <contact class="bg-none fil-content" />
