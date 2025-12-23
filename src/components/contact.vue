@@ -40,27 +40,27 @@
                     <!-- Name -->
                     <div class="input-group">
                         <i class="fa-solid fa-user input-icon"></i>
-                        <input type="text" v-model="form.name" />
-                        <label>Your Name</label>
+                        <input type="text" v-model="form.name" id="name" name="name" />
+                        <label for="name">Your Name</label>
                     </div>
 
                     <!-- Email -->
                     <div class="input-group">
                         <i class="fa-solid fa-envelope input-icon"></i>
-                        <input type="email" v-model="form.email" />
-                        <label>Your Email</label>
+                        <input type="email" v-model="form.email" id="email" name="email" />
+                        <label for="email">Your Email</label>
                     </div>
 
                     <!-- Message -->
                     <div class="input-group textarea-group">
                         <i class="fa-solid fa-message input-icon"></i>
-                        <textarea v-model="form.message"></textarea>
-                        <label>Your Message</label>
+                        <textarea v-model="form.message" name="message" id="message"></textarea>
+                        <label for="message">Your Message</label>
                     </div>
                     <v-row justify="center">
 
                         <!-- Button -->
-                        <button type="submit" class="send-btn center-align">
+                        <button type="submit" aria-label="submit" class="send-btn center-align">
                             Send Message
                         </button>
                     </v-row>
@@ -182,21 +182,10 @@ export default {
     background: rgb(29 43 65 / 18%);
     backdrop-filter: blur(18px);
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.12);
-    animation: fadeInUp 1s ease;
 }
 
 /* Animation */
-@keyframes fadeInUp {
-    from {
-        transform: translateY(40px);
-        opacity: 0;
-    }
 
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
 
 /* ======= INPUTS ======= */
 .input-group {

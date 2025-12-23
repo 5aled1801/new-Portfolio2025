@@ -12,8 +12,7 @@
 
                 <!-- Image Section -->
                 <v-col cols="12" md="5" class="d-flex align-center justify-center h-25 h-md-25 max-w-sm-50">
-                    <img src="./../assets/images/zzzzzzzzz.png" alt="Khaled Hassan" class="w-100 h-50 rounded"
-                        loading="lazy">
+                    <img src="./../assets/images/zzzzzzzzz.png" alt="Khaled Hassan" class="w-100 h-50 rounded" lazy>
                 </v-col>
             </v-row>
         </v-container></v-app>

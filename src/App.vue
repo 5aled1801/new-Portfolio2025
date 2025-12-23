@@ -55,7 +55,13 @@ export default {
   },
   beforeUnmount() {
     if (this.vantaEffect) this.vantaEffect.destroy();
+  },
+  methods: {
+    openWhats() {
+      window.open(`https://wa.me/201284456019`, "__blank")
+    }
   }
+
 };
 </script>
 
@@ -109,18 +115,18 @@ export default {
 
       <!-- Desktop Menu -->
       <v-row class="d-none d-md-flex mx-1" align="center" justify="end">
-        <v-btn text href="#">Home</v-btn>
-        <v-btn text href="#About">About</v-btn>
+        <v-btn text href="#" aria-label="home">Home</v-btn>
+        <v-btn text href="#About" aria-label="about">About</v-btn>
         <!-- <v-btn text href="#experience">Experience</v-btn> -->
-        <v-btn text href="#Skills">Skills</v-btn>
-        <v-btn text href="#Projects">Projects</v-btn>
-        <v-btn text href="#Contact">Contact</v-btn>
+        <v-btn text href="#Skills" aria-label='skills'>Skills</v-btn>
+        <v-btn text href="#Projects" aria-label="projects">Projects</v-btn>
+        <v-btn text href="#Contact" aria-label="contact">Contact</v-btn>
       </v-row>
 
       <!-- Mobile Hamburger -->
       <v-menu class="d-md-none w-100 w-screen" v-model="drawer" location="end" :close-on-content-click="false">
         <template #activator="{ props }" class="d-none">
-          <v-btn icon v-bind="props" class="d-md-none">
+          <v-btn icon v-bind="props" class="d-md-none" aria-label="btn-drawer">
             <v-icon>mdi-menu</v-icon>
           </v-btn>
         </template>
@@ -130,12 +136,12 @@ export default {
     right: -52px;">
 
           <v-list>
-            <v-list-item href="#">Home</v-list-item>
-            <v-list-item href="#About">About</v-list-item>
+            <v-list-item href="#" aria-label="home">Home</v-list-item>
+            <v-list-item href="#About" aria-label="about">About</v-list-item>
             <!-- <v-list-item href="#experience">Experience</v-list-item> -->
-            <v-list-item href="#Skills">Skills</v-list-item>
-            <v-list-item href="#Projects">Projects</v-list-item>
-            <v-list-item href="#Contact">Contact</v-list-item>
+            <v-list-item href="#Skills" aria-label="skils">Skills</v-list-item>
+            <v-list-item href="#Projects" aria-label="project">Projects</v-list-item>
+            <v-list-item href="#Contact" aria-label="contact">Contact</v-list-item>
           </v-list>
         </div>
       </v-menu>
@@ -144,6 +150,11 @@ export default {
       <div ref="vanta" class="vanta-bg" id="vanta"> </div>
 
     </v-container>
+    <v-icon @click="openWhats()"
+      class="wapp text-h3 text-white bg-success position-fixed right-0 mx-4 mb-4  rounded-circle"
+      style="z-index: 100000;bottom:10px" aria-label="whatsapp">
+      mdi-whatsapp
+    </v-icon>
 
     <myInfoCom class="bg-none fil-content" loading="lazy" />
     <about class="bg-none h-screen fil-content" style="min-height: 100vh;" />
@@ -157,6 +168,29 @@ export default {
 .v-toolbar-title svg {
   max-width: 120px;
   height: auto;
+}
+
+.wapp {
+  position: relative;
+  border-radius: 50%;
+  animation: pulseFloat 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseFloat {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+  }
+
+  50% {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 0 0 18px rgba(37, 211, 102, 0);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
 }
 
 
