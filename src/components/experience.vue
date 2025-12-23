@@ -2,7 +2,7 @@
     <v-container id="experience">
         <v-row justify="center">
             <v-col cols="12" md="8">
-                <h2 class="text-h2 text-center my-2 pb-4 w-100 text-white">
+                <h2 class="text-h2 text-center my-2 py-4 w-100 text-white">
                     Experience
                 </h2>
 
