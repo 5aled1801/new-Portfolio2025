@@ -111,7 +111,7 @@ export default {
       <v-row class="d-none d-md-flex mx-1" align="center" justify="end">
         <v-btn text href="#">Home</v-btn>
         <v-btn text href="#About">About</v-btn>
-        <v-btn text href="#experience">Experience</v-btn>
+        <!-- <v-btn text href="#experience">Experience</v-btn> -->
         <v-btn text href="#Skills">Skills</v-btn>
         <v-btn text href="#Projects">Projects</v-btn>
         <v-btn text href="#Contact">Contact</v-btn>
@@ -132,7 +132,7 @@ export default {
           <v-list>
             <v-list-item href="#">Home</v-list-item>
             <v-list-item href="#About">About</v-list-item>
-            <v-list-item href="#experience">Experience</v-list-item>
+            <!-- <v-list-item href="#experience">Experience</v-list-item> -->
             <v-list-item href="#Skills">Skills</v-list-item>
             <v-list-item href="#Projects">Projects</v-list-item>
             <v-list-item href="#Contact">Contact</v-list-item>
@@ -147,7 +147,7 @@ export default {
 
     <myInfoCom class="bg-none fil-content" loading="lazy" />
     <about class="bg-none h-screen fil-content" style="min-height: 100vh;" />
-    <experience class="bg-none fil-content" />
+    <!-- <experience class="bg-none " /> -->
     <skills class="bg-none fil-content" />
     <projects class="bg-none fil-content" />
     <contact class="bg-none fil-content" />
