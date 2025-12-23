@@ -4,6 +4,7 @@ import about from './components/about.vue';
 import skills from './components/skills.vue';
 import projects from './components/projects.vue';
 import contact from './components/contact.vue';
+import experience from './components/experience.vue';
 
 export default {
   data() {
@@ -16,21 +17,23 @@ export default {
   components: {
 
     myInfoCom,
-    about, skills, projects, contact
+    about, skills, projects, contact, experience
   }
   ,
 
   mounted() {
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        console.log("Latitude:", position.coords.latitude);
-        console.log("Longitude:", position.coords.longitude);
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-      }
-    );
+    // navigator.geolocation.getCurrentPosition(
+    //   (position) => {
+    //     console.log("Latitude:", position.coords.latitude);
+    //     console.log("Longitude:", position.coords.longitude);
+    //     console.log("lllll", position);
+
+    //   },
+    //   (error) => {
+    //     console.error("Error getting location:", error);
+    //   }
+    // );
 
 
 
@@ -60,7 +63,7 @@ export default {
 <template>
   <v-app style="background: none;">
 
-    <v-app-bar app color="indigo" dark>
+    <v-app-bar app color="black" dark>
       <!-- Logo -->
       <v-toolbar-title class="d-flex align-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="120" height="50" viewBox="0 0 400 140">
@@ -108,6 +111,7 @@ export default {
       <v-row class="d-none d-md-flex mx-1" align="center" justify="end">
         <v-btn text href="#">Home</v-btn>
         <v-btn text href="#About">About</v-btn>
+        <v-btn text href="#experience">Experience</v-btn>
         <v-btn text href="#Skills">Skills</v-btn>
         <v-btn text href="#Projects">Projects</v-btn>
         <v-btn text href="#Contact">Contact</v-btn>
@@ -128,6 +132,7 @@ export default {
           <v-list>
             <v-list-item href="#">Home</v-list-item>
             <v-list-item href="#About">About</v-list-item>
+            <v-list-item href="#experience">Experience</v-list-item>
             <v-list-item href="#Skills">Skills</v-list-item>
             <v-list-item href="#Projects">Projects</v-list-item>
             <v-list-item href="#Contact">Contact</v-list-item>
@@ -142,6 +147,7 @@ export default {
 
     <myInfoCom class="bg-none fil-content" loading="lazy" />
     <about class="bg-none h-screen fil-content" style="min-height: 100vh;" />
+    <experience class="bg-none fil-content" />
     <skills class="bg-none fil-content" />
     <projects class="bg-none fil-content" />
     <contact class="bg-none fil-content" />

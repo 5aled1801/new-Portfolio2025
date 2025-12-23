@@ -46,7 +46,7 @@
 
             </v-col>
         </v-row>
-        <v-row justify="center " style="gap: 50px;">
+        <v-row justify="center " style="gap: 10px; ">
 
             <div class="link-item d-flex gap-1 align-center text-white mb-4 text-h5" style="gap: 15px;">
 
