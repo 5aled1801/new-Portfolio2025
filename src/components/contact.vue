@@ -8,7 +8,30 @@
     <v-container class="mt-10">
 
         <h2 class="contact-title">Let's Work Together</h2>
+        <p class=" mb-8 text-grey-lighten-1 text-center text-h5">
+            Have a project in mind or need a frontend developer?
+            I’m ready to help you turn ideas into reality.
+        </p><v-row justify="center " style="gap: 10px; ">
 
+            <div class="link-item d-flex gap-1 align-center text-white mb-4 text-h5" style="gap: 15px;">
+
+                <v-icon @click="openLink('https://www.linkedin.com/in/khaled-hassan-2820b4248')" class="social-icon"
+                    title="Go to linkedin">
+                    mdi-linkedin
+                </v-icon>
+                <v-icon @click="openLink('https://github.com/5aled1801')" class="social-icon" title="go to github">
+                    mdi-github
+                </v-icon>
+                <v-icon class="social-icon" @click="openLink(`tel:+201284456019`)" title="call me">mdi-phone</v-icon>
+                <v-icon class="social-icon" @click="openLink(`https://wa.me/201284456019`)"
+                    title="chat me what's app">mdi-whatsapp</v-icon>
+                <v-icon class="social-icon" @click="openLink(`mailto:khaled.h.almass@gmail.com`)"
+                    title="Send email to me ">mdi-gmail</v-icon>
+
+            </div>
+
+
+        </v-row>
         <v-row justify="center">
             <v-col cols="12" md="6">
 
@@ -17,21 +40,21 @@
                     <!-- Name -->
                     <div class="input-group">
                         <i class="fa-solid fa-user input-icon"></i>
-                        <input type="text" v-model="form.name" required />
+                        <input type="text" v-model="form.name" />
                         <label>Your Name</label>
                     </div>
 
                     <!-- Email -->
                     <div class="input-group">
                         <i class="fa-solid fa-envelope input-icon"></i>
-                        <input type="email" v-model="form.email" required />
+                        <input type="email" v-model="form.email" />
                         <label>Your Email</label>
                     </div>
 
                     <!-- Message -->
                     <div class="input-group textarea-group">
                         <i class="fa-solid fa-message input-icon"></i>
-                        <textarea v-model="form.message" required></textarea>
+                        <textarea v-model="form.message"></textarea>
                         <label>Your Message</label>
                     </div>
                     <v-row justify="center">
@@ -46,30 +69,8 @@
 
             </v-col>
         </v-row>
-        <v-row justify="center " style="gap: 10px; ">
 
-            <div class="link-item d-flex gap-1 align-center text-white mb-4 text-h5" style="gap: 15px;">
-
-                <v-icon @click="openLink('https://www.linkedin.com/in/khaled-hassan-2820b4248')" class="social-icon">
-                    mdi-linkedin
-                </v-icon>
-                <v-icon @click="openLink('https://github.com/5aled1801')" class="social-icon">
-                    mdi-github
-                </v-icon>
-
-
-
-            </div>
-            <div class="link-item d-flex gap-1 align-center text-white mb-4 text-h5">
-                <v-icon>mdi-phone</v-icon>
-                <h1 class="text-h5">+201284456019</h1>
-            </div>
-
-
-
-        </v-row>
         <v-row>
-
             <v-col>
                 <div class="text-center text-white">
                     <p>&copy; 2025 Khaled Hassan. All rights reserved.</p>
@@ -82,6 +83,7 @@
 
 <script>
 import emailjs from 'emailjs-com';
+import Swal from 'sweetalert2'
 
 export default {
     data() {
@@ -99,29 +101,54 @@ export default {
         },
         async sendEmail() {
             const params = {
-                from_name: this.form.name,
-                from_email: this.form.email,
+                name: this.form.name,
+                email: this.form.email,
                 message: this.form.message
             };
-
-            try {
-                await emailjs.send(
-                    "service_1knd85o",
-                    "template_o779c3a",
-                    params,
-                    "v8nsuu2UQjSZR2oU3"
-                );
-                alert("Message sent successfully!");
-                this.form = { name: "", email: "", message: "" };
-            } catch (err) {
-                console.error(err);
-                alert("Failed to send message.");
+            if (this.form.name == "" || this.form.email == "" || this.form.message == "") {
+                Swal.fire({
+                    title: `Please fill all data`,
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    customClass: {
+                        confirmButton: "my-confirm-btn",
+                    },
+                });
+            } else {
+                try {
+                    await emailjs.send(
+                        "service_1knd85o",
+                        "template_o779c3a",
+                        params,
+                        "v8nsuu2UQjSZR2oU3"
+                    );
+                    Swal.fire({
+                        title: "sent successfuly ",
+                        icon: "success",
+                        draggable: true,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "my-confirm-btn",
+                        },
+                    });
+                    this.form = { name: "", email: "", message: "" };
+                } catch (err) {
+                    console.error(err);
+                    Swal.fire({
+                        title: `Failed to send message.`,
+                        icon: "error",
+                        draggable: true, confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "my-confirm-btn",
+                        },
+                    });
+                }
             }
         }
     }
 };
 </script>
-<style scoped>
+<style>
 /* ======= CONTACT SECTION ======= */
 .contact-section {
     width: 100%;
@@ -130,6 +157,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.social-icon:hover {
+    transition: 0.5s ease-in-out;
+    color: rgb(112, 118, 126);
 }
 
 /* Title */
@@ -147,7 +179,7 @@ export default {
 .contact-form {
     padding: 35px;
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(29 43 65 / 18%);
     backdrop-filter: blur(18px);
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.12);
     animation: fadeInUp 1s ease;
@@ -232,5 +264,13 @@ export default {
     background: #e3f2fd !important;
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(255, 255, 255, 0.5);
+}
+
+.my-confirm-btn {
+    background-color: #0024ffba !important;
+    color: #fff !important;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 600;
 }
 </style>
