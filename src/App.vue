@@ -1,226 +1,103 @@
-<script>
-import myInfoCom from './components/myInfo.vue';
-import about from './components/about.vue';
-import skills from './components/skills.vue';
-import projects from './components/projects.vue';
-import contact from './components/contact.vue';
-import experience from './components/experience.vue';
+<template>
+  <div id="app-root">
+    <!-- Custom Cursor -->
+    <div class="cursor" ref="cursorDot" />
+    <div class="cursor-ring" ref="cursorRing" :class="{ hovered: isHovered }" />
 
-export default {
-  data() {
+    <!-- Scroll Progress -->
+    <div class="progress-bar" :style="{ width: scrollProgress + '%' }" />
 
-    return {
-      drawer: false,
-      vantaEffect: null,
-    };
-  },
-  components: {
+    <!-- Navigation -->
+    <NavBar />
 
-    myInfoCom,
-    about, skills, projects, contact, experience
+    <!-- Page Sections -->
+    <main>
+      <HeroSection />
+      <AboutSection />
+      <SkillsSection />
+      <ExperienceSection />
+      <ProjectsSection />
+      <ContactSection />
+    </main>
+
+    <FooterBar />
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import NavBar from './components/NavBar.vue'
+import HeroSection from './components/HeroSection.vue'
+import AboutSection from './components/AboutSection.vue'
+import SkillsSection from './components/SkillsSection.vue'
+import ExperienceSection from './components/ExperienceSection.vue'
+import ProjectsSection from './components/ProjectsSection.vue'
+import ContactSection from './components/ContactSection.vue'
+import FooterBar from './components/FooterBar.vue'
+
+const cursorDot  = ref(null)
+const cursorRing = ref(null)
+const isHovered  = ref(false)
+const scrollProgress = ref(0)
+
+let ringX = 0, ringY = 0
+let dotX  = 0, dotY  = 0
+let animId = null
+
+function onMouseMove(e) {
+  dotX = e.clientX
+  dotY = e.clientY
+  if (cursorDot.value) {
+    cursorDot.value.style.left = dotX + 'px'
+    cursorDot.value.style.top  = dotY + 'px'
   }
-  ,
+}
 
-  mounted() {
-
-    // navigator.geolocation.getCurrentPosition(
-    //   (position) => {
-    //     console.log("Latitude:", position.coords.latitude);
-    //     console.log("Longitude:", position.coords.longitude);
-    //     console.log("lllll", position);
-
-    //   },
-    //   (error) => {
-    //     console.error("Error getting location:", error);
-    //   }
-    // );
-
-
-
-    this.vantaEffect = window.VANTA.TOPOLOGY({
-      el: document.getElementById("vanta"),
-      mouseControls: false,
-      touchControls: false,
-      gyroControls: false,
-      minHeight: 200.0,
-      minWidth: 200.0,
-      scale: 1.0,
-      scaleMobile: 1.0,
-      color: 0x1da4ff,
-      backgroundColor: 0x000000
-    },
-      this.view = true
-    );
-
-  },
-  beforeUnmount() {
-    if (this.vantaEffect) this.vantaEffect.destroy();
-  },
-  methods: {
-    openWhats() {
-      window.open(`https://wa.me/201284456019`, "__blank")
-    }
+function animateRing() {
+  ringX += (dotX - ringX) * 0.12
+  ringY += (dotY - ringY) * 0.12
+  if (cursorRing.value) {
+    cursorRing.value.style.left = ringX + 'px'
+    cursorRing.value.style.top  = ringY + 'px'
   }
+  animId = requestAnimationFrame(animateRing)
+}
 
-};
+function onScroll() {
+  const total = document.body.scrollHeight - window.innerHeight
+  scrollProgress.value = total > 0 ? (window.scrollY / total) * 100 : 0
+}
+
+function setupReveal() {
+  const els = document.querySelectorAll('.reveal')
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
+  }, { threshold: 0.12 })
+  els.forEach(el => obs.observe(el))
+}
+
+function setupHoverCursor() {
+  document.addEventListener('mouseover', e => {
+    const el = e.target.closest('a, button, .hover-target')
+    isHovered.value = !!el
+  })
+}
+
+onMounted(() => {
+  document.addEventListener('mousemove', onMouseMove)
+  window.addEventListener('scroll', onScroll, { passive: true })
+  animateRing()
+  setTimeout(setupReveal, 100)
+  setupHoverCursor()
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mousemove', onMouseMove)
+  window.removeEventListener('scroll', onScroll)
+  cancelAnimationFrame(animId)
+})
 </script>
 
-
-<template>
-  <v-app style="background: none;">
-
-    <v-app-bar app color="black" dark>
-      <!-- Logo -->
-      <v-toolbar-title class="d-flex align-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="50" viewBox="0 0 400 140">
-          <defs>
-            <linearGradient id="gradFinalAnim" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#1da4ff">
-                <animate attributeName="stop-color" values="#1da4ff;#ff4081;#1da4ff" dur="4s"
-                  repeatCount="indefinite" />
-              </stop>
-              <stop offset="50%" style="stop-color:#00ffe7">
-                <animate attributeName="stop-color" values="#00ffe7;#ff00ff;#00ffe7" dur="4s"
-                  repeatCount="indefinite" />
-              </stop>
-              <stop offset="100%" style="stop-color:#ff4081">
-                <animate attributeName="stop-color" values="#ff4081;#1da4ff;#ff4081" dur="4s"
-                  repeatCount="indefinite" />
-              </stop>
-            </linearGradient>
-          </defs>
-
-          <!-- KH Monogram -->
-          <g>
-            <polygon points="10,120 10,20 45,70" fill="url(#gradFinalAnim)">
-              <animateTransform attributeName="transform" type="rotate" from="0 30 70" to="360 30 70" dur="10s"
-                repeatCount="indefinite" />
-            </polygon>
-            <polygon points="45,20 80,120 80,20" fill="url(#gradFinalAnim)" opacity="0.9">
-              <animateTransform attributeName="transform" type="rotate" from="360 62 70" to="0 62 70" dur="12s"
-                repeatCount="indefinite" />
-            </polygon>
-            <polygon points="80,70 115,20 115,120" fill="url(#gradFinalAnim)" opacity="0.7">
-              <animateTransform attributeName="transform" type="rotate" from="0 97 70" to="360 97 70" dur="14s"
-                repeatCount="indefinite" />
-            </polygon>
-          </g>
-
-          <!-- Full Name -->
-          <text x="160" y="85" font-family="'Rubik 80s Fade', system-ui" font-weight="700" font-size="60" fill="#fff">
-            Khaled
-          </text>
-        </svg>
-      </v-toolbar-title>
-
-      <!-- Desktop Menu -->
-      <v-row class="d-none d-md-flex mx-1" align="center" justify="end">
-        <v-btn text href="#" aria-label="home">Home</v-btn>
-        <v-btn text href="#About" aria-label="about">About</v-btn>
-        <!-- <v-btn text href="#experience">Experience</v-btn> -->
-        <v-btn text href="#Skills" aria-label='skills'>Skills</v-btn>
-        <v-btn text href="#Projects" aria-label="projects">Projects</v-btn>
-        <v-btn text href="#Contact" aria-label="contact">Contact</v-btn>
-      </v-row>
-
-      <!-- Mobile Hamburger -->
-      <v-menu class="d-md-none w-100 w-screen" v-model="drawer" location="end" :close-on-content-click="false">
-        <template #activator="{ props }" class="d-none">
-          <v-btn icon v-bind="props" class="d-md-none" aria-label="btn-drawer">
-            <v-icon>mdi-menu</v-icon>
-          </v-btn>
-        </template>
-        <div class="w-screen" style="width: 100vw;top:25px !important;position: absolute;
-    width: 100vw;
-    top: 9px !important;
-    right: -52px;">
-
-          <v-list>
-            <v-list-item href="#" aria-label="home">Home</v-list-item>
-            <v-list-item href="#About" aria-label="about">About</v-list-item>
-            <!-- <v-list-item href="#experience">Experience</v-list-item> -->
-            <v-list-item href="#Skills" aria-label="skils">Skills</v-list-item>
-            <v-list-item href="#Projects" aria-label="project">Projects</v-list-item>
-            <v-list-item href="#Contact" aria-label="contact">Contact</v-list-item>
-          </v-list>
-        </div>
-      </v-menu>
-    </v-app-bar>
-    <v-container class="bg-none">
-      <div ref="vanta" class="vanta-bg" id="vanta"> </div>
-
-    </v-container>
-    <v-icon @click="openWhats()"
-      class="wapp text-h3 text-white bg-success position-fixed right-0 mx-4 mb-4  rounded-circle"
-      style="z-index: 100000;bottom:10px" aria-label="whatsapp">
-      mdi-whatsapp
-    </v-icon>
-
-    <myInfoCom class="bg-none fil-content" loading="lazy" />
-    <about class="bg-none h-screen fil-content" style="min-height: 100vh;" />
-    <!-- <experience class="bg-none " /> -->
-    <skills class="bg-none fil-content" />
-    <projects class="bg-none fil-content" />
-    <contact class="bg-none fil-content" />
-  </v-app>
-</template>
 <style scoped>
-.v-toolbar-title svg {
-  max-width: 120px;
-  height: auto;
-}
-
-.wapp {
-  position: relative;
-  border-radius: 50%;
-  animation: pulseFloat 2.5s ease-in-out infinite;
-}
-
-@keyframes pulseFloat {
-  0% {
-    transform: translateY(0) scale(1);
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
-  }
-
-  50% {
-    transform: translateY(-6px) scale(1.05);
-    box-shadow: 0 0 0 18px rgba(37, 211, 102, 0);
-  }
-
-  100% {
-    transform: translateY(0) scale(1);
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-  }
-}
-
-
-.v-applictaion {
-  background-color: none !important;
-}
-
-.vanta-bg {
-  width: 100% !important;
-  height: 100vh;
-  position: fixed !important;
-  top: 0;
-  z-index: -1;
-  left: 0;
-
-}
-
-.vanta-canvas {
-  position: fixed !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.v-overlay__content {
-  position: fixed;
-  width: 100% !important;
-  top: 25px !important;
-}
-
-.v-list {
-  width: 100% !important;
-}
+#app-root { min-height: 100vh; }
 </style>
