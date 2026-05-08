@@ -35,13 +35,13 @@ import ProjectsSection from './components/ProjectsSection.vue'
 import ContactSection from './components/ContactSection.vue'
 import FooterBar from './components/FooterBar.vue'
 
-const cursorDot  = ref(null)
+const cursorDot = ref(null)
 const cursorRing = ref(null)
-const isHovered  = ref(false)
+const isHovered = ref(false)
 const scrollProgress = ref(0)
 
 let ringX = 0, ringY = 0
-let dotX  = 0, dotY  = 0
+let dotX = 0, dotY = 0
 let animId = null
 
 function onMouseMove(e) {
@@ -49,7 +49,7 @@ function onMouseMove(e) {
   dotY = e.clientY
   if (cursorDot.value) {
     cursorDot.value.style.left = dotX + 'px'
-    cursorDot.value.style.top  = dotY + 'px'
+    cursorDot.value.style.top = dotY + 'px'
   }
 }
 
@@ -58,7 +58,7 @@ function animateRing() {
   ringY += (dotY - ringY) * 0.12
   if (cursorRing.value) {
     cursorRing.value.style.left = ringX + 'px'
-    cursorRing.value.style.top  = ringY + 'px'
+    cursorRing.value.style.top = ringY + 'px'
   }
   animId = requestAnimationFrame(animateRing)
 }
@@ -99,5 +99,9 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-#app-root { min-height: 100vh; }
+#app-root {
+  min-height: 100vh;
+}
+
+
 </style>

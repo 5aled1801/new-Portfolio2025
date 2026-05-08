@@ -45,6 +45,19 @@ body {
   overflow-x: hidden;
   cursor: none;
 }
+@media (max-width:768px) {
+
+  body {
+    cursor: auto;
+  }
+
+  .cursor,
+  .cursor-ring {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
 
 /* ─── Custom Cursor ─── */
 .cursor {
@@ -231,4 +244,7 @@ body::after {
 ::selection {
   background: rgba(201, 168, 76, 0.3);
   color: var(--gold-light);
+}
+*{
+  padding:0px 3px 0px 3px ;
 }
