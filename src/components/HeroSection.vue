@@ -13,33 +13,36 @@
     </div>
 
     <div class="hero-content">
-      <p class="hero-label reveal">✦ Available for opportunities</p>
+      <!-- Left: text -->
+      <div class="hero-left">
+        <p class="hero-label reveal">✦ Available for opportunities</p>
 
-      <h1 class="hero-name reveal reveal-delay-1">
-        <span class="name-line">Khaled</span>
-        <span class="name-line gold-text">Hassan</span>
-      </h1>
+        <h1 class="hero-name reveal reveal-delay-1">
+          <span class="name-line">Khaled</span>
+          <span class="name-line gold-text">Hassan</span>
+        </h1>
 
-      <p class="hero-role reveal reveal-delay-2">
-        Frontend Developer
-        <span class="role-sep">·</span>
-        Vue.js Specialist
-      </p>
+        <p class="hero-role reveal reveal-delay-2">
+          Frontend Developer
+          <span class="role-sep">·</span>
+          Vue.js Specialist
+        </p>
 
-      <p class="hero-desc reveal reveal-delay-3">
-        Crafting high-performance, scalable web experiences
-        with Vue.js, Nuxt.js &amp; modern frontend technologies.
-        B.Sc. Computer Science · Cairo, Egypt.
-      </p>
+        <p class="hero-desc reveal reveal-delay-3">
+          Crafting high-performance, scalable web experiences
+          with Vue.js, Nuxt.js &amp; modern frontend technologies.
+          B.Sc. Computer Science · Cairo, Egypt.
+        </p>
 
-      <div class="hero-cta reveal reveal-delay-4">
-        <a href="#projects" class="btn-gold" @click.prevent="scrollTo('projects')">
-          <span>View My Work</span>
-        </a>
-        <a href="#contact" class="btn-outline" @click.prevent="scrollTo('contact')">Get In Touch</a>
+        <div class="hero-cta reveal reveal-delay-4">
+          <a href="#projects" class="btn-gold" @click.prevent="scrollTo('projects')">
+            <span>View My Work</span>
+          </a>
+          <a href="#contact" class="btn-outline" @click.prevent="scrollTo('contact')">Get In Touch</a>
+        </div>
       </div>
 
-      <!-- Code block -->
+      <!-- Right: code block -->
       <div class="code-block reveal reveal-delay-5">
         <div class="code-dots">
           <span /><span /><span />
@@ -89,8 +92,7 @@ function particleStyle(i) {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 6rem 5% 5rem;
+  padding: 6rem 6% 5rem;
   overflow: hidden;
   position: relative;
   background: var(--dark);
@@ -130,11 +132,21 @@ function particleStyle(i) {
   100% { opacity: 0; transform: translateY(-80px); }
 }
 
-/* ─── Content ─── */
+/* ─── Content: two-column grid ─── */
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 820px;
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* Left column */
+.hero-left {
+  text-align: left;
 }
 
 .hero-label {
@@ -148,9 +160,9 @@ function particleStyle(i) {
 .hero-name {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 9vw, 8rem);
+  font-size: clamp(3rem, 6vw, 6.5rem);
   font-weight: 700;
   line-height: 0.95;
   letter-spacing: 0.04em;
@@ -167,19 +179,19 @@ function particleStyle(i) {
 }
 
 .hero-role {
-  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  font-size: clamp(0.72rem, 1.4vw, 0.9rem);
   color: var(--muted);
-  letter-spacing: 0.28em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
 }
 
 .role-sep { color: var(--gold); margin: 0 0.75em; }
 
 .hero-desc {
-  max-width: 520px;
-  margin: 0 auto 2.5rem;
-  font-size: 0.95rem;
+  max-width: 460px;
+  margin: 0 0 2.25rem;
+  font-size: 0.93rem;
   line-height: 1.85;
   color: var(--text-60);
   font-weight: 300;
@@ -188,20 +200,20 @@ function particleStyle(i) {
 .hero-cta {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 2.5rem;
+  margin-bottom: 0;
 }
 
-/* ─── Code Block ─── */
+/* ─── Code Block (right column) ─── */
 .code-block {
-  display: inline-block;
+  display: block;
   background: rgba(255,255,255,0.02);
   border: 0.5px solid rgba(201,168,76,0.12);
   text-align: left;
-  padding: 1.25rem 1.5rem;
+  padding: 2rem 2rem;
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 .code-block::before {
@@ -270,5 +282,28 @@ function particleStyle(i) {
 @keyframes scrollPulse {
   0%, 100% { opacity: 0.2; }
   50%       { opacity: 1; }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .hero {
+    text-align: center;
+    padding: 6rem 5% 6rem;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .hero-left { text-align: center; }
+
+  .hero-name { align-items: center; }
+
+  .hero-desc { margin: 0 auto 2rem; }
+
+  .hero-cta { justify-content: center; }
+
+  .code-block { max-width: 480px; margin: 0 auto; }
 }
 </style>
