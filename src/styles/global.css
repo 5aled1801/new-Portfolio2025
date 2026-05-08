@@ -45,19 +45,7 @@ body {
   overflow-x: hidden;
   cursor: none;
 }
-@media (max-width:768px) {
 
-  body {
-    cursor: auto;
-  }
-
-  .cursor,
-  .cursor-ring {
-    display: none !important;
-    opacity: 0;
-    visibility: hidden;
-  }
-}
 
 /* ─── Custom Cursor ─── */
 .cursor {
@@ -247,4 +235,16 @@ body::after {
 }
 *{
   padding:0px 3px 0px 3px ;
+}@media (max-width:768px) {
+
+  body {
+    cursor: auto;
+  }
+
+  .cursor,
+  .cursor-ring {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+  }
 }
