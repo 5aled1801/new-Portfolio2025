@@ -22,9 +22,11 @@
 
     <FooterBar />
   </div>
+  <Analytics/>
 </template>
 
 <script setup>
+import { Analytics } from "@vercel/analytics/vue"
 import { ref, onMounted, onUnmounted } from 'vue'
 import NavBar from './components/NavBar.vue'
 import HeroSection from './components/HeroSection.vue'
