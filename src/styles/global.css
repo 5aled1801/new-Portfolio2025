@@ -238,13 +238,13 @@ body::after {
 }@media (max-width:768px) {
 
   body {
-    cursor: auto;
+    cursor: auto !important;
   }
 
   .cursor,
   .cursor-ring {
     display: none !important;
-    opacity: 0;
-    visibility: hidden;
+    opacity: 0!important;
+    visibility: hidden !important;
   }
 }
