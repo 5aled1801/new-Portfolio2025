@@ -22,9 +22,21 @@
           @pointerleave="resetCard"
         >
           <div class="project-art" aria-hidden="true">
-            <div class="art-orbit" />
-            <div class="art-arch" />
-            <div class="art-glow" />
+            <img
+              v-if="!project.previewFailed"
+              class="project-screenshot"
+              :src="getScreenshotUrl(project.link)"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+              @error="project.previewFailed = true"
+            >
+            <template v-if="project.previewFailed">
+              <div class="art-orbit" />
+              <div class="art-arch" />
+              <div class="art-glow" />
+            </template>
             <span class="art-index">0{{ String(index + 1).padStart(2, '0') }}</span>
             <span class="art-caption">Selected work <span>—</span> {{ project.tags[0] }}</span>
           </div>
@@ -57,7 +69,9 @@
 </template>
 
 <script setup>
-const projects = [
+import { reactive } from 'vue'
+
+const projects = reactive([
   {
     title: 'Bundle builder App',
     desc: 'An interactive multi-step Bundle Builder that allows users to create customized product bundles through a guided selection process. Built with React, Redux Toolkit, and Tailwind CSS, featuring dynamic product selection, centralized state management, and a real-time review panel.',
@@ -118,7 +132,11 @@ const projects = [
     tags: ['Vue 3'],
     link: 'https://todolist-c7c25.web.app/',
   },
-]
+])
+
+function getScreenshotUrl(url) {
+  return `https://image.thum.io/get/width/1200/crop/800/noanimate/${url}`
+}
 
 function tiltCard(event) {
   if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -205,6 +223,15 @@ function resetCard(event) {
     linear-gradient(120deg, #15140f, #090908 64%);
 }
 
+.project-screenshot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
 .project-card.featured .project-art {
   min-height: 250px;
 }
@@ -212,7 +239,9 @@ function resetCard(event) {
 .project-art::after {
   position: absolute;
   inset: 0;
-  background: linear-gradient(130deg, transparent 40%, rgba(255, 255, 255, 0.035), transparent 70%);
+  background:
+    linear-gradient(180deg, rgba(5, 5, 5, 0.04) 35%, rgba(5, 5, 5, 0.72)),
+    linear-gradient(130deg, transparent 40%, rgba(255, 255, 255, 0.035), transparent 70%);
   content: "";
   pointer-events: none;
 }
