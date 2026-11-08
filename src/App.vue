@@ -1,16 +1,7 @@
 <template>
   <div id="app-root">
-    <!-- Custom Cursor -->
-    <div class="cursor" ref="cursorDot" />
-    <div class="cursor-ring" ref="cursorRing" :class="{ hovered: isHovered }" />
-
-    <!-- Scroll Progress -->
     <div class="progress-bar" :style="{ width: scrollProgress + '%' }" />
-
-    <!-- Navigation -->
     <NavBar />
-
-    <!-- Page Sections -->
     <main>
       <HeroSection />
       <AboutSection />
@@ -19,15 +10,16 @@
       <ProjectsSection />
       <ContactSection />
     </main>
-
     <FooterBar />
   </div>
-  <Analytics/>
+  <Analytics v-if="isVercelHost" />
 </template>
 
 <script setup>
-import { Analytics } from "@vercel/analytics/vue"
-import { ref, onMounted, onUnmounted } from 'vue'
+import { Analytics } from '@vercel/analytics/vue'
+import { onMounted, onUnmounted, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import NavBar from './components/NavBar.vue'
 import HeroSection from './components/HeroSection.vue'
 import AboutSection from './components/AboutSection.vue'
@@ -37,73 +29,65 @@ import ProjectsSection from './components/ProjectsSection.vue'
 import ContactSection from './components/ContactSection.vue'
 import FooterBar from './components/FooterBar.vue'
 
-const cursorDot = ref(null)
-const cursorRing = ref(null)
-const isHovered = ref(false)
 const scrollProgress = ref(0)
-
-let ringX = 0, ringY = 0
-let dotX = 0, dotY = 0
-let animId = null
-
-function onMouseMove(e) {
-  dotX = e.clientX
-  dotY = e.clientY
-  if (cursorDot.value) {
-    cursorDot.value.style.left = dotX + 'px'
-    cursorDot.value.style.top = dotY + 'px'
-  }
-}
-
-function animateRing() {
-  ringX += (dotX - ringX) * 0.12
-  ringY += (dotY - ringY) * 0.12
-  if (cursorRing.value) {
-    cursorRing.value.style.left = ringX + 'px'
-    cursorRing.value.style.top = ringY + 'px'
-  }
-  animId = requestAnimationFrame(animateRing)
-}
+const isVercelHost = typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app')
+let animationContext
 
 function onScroll() {
-  const total = document.body.scrollHeight - window.innerHeight
-  scrollProgress.value = total > 0 ? (window.scrollY / total) * 100 : 0
-}
-
-function setupReveal() {
-  const els = document.querySelectorAll('.reveal')
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
-  }, { threshold: 0.12 })
-  els.forEach(el => obs.observe(el))
-}
-
-function setupHoverCursor() {
-  document.addEventListener('mouseover', e => {
-    const el = e.target.closest('a, button, .hover-target')
-    isHovered.value = !!el
-  })
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+  scrollProgress.value = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0
 }
 
 onMounted(() => {
-  document.addEventListener('mousemove', onMouseMove)
   window.addEventListener('scroll', onScroll, { passive: true })
-  animateRing()
-  setTimeout(setupReveal, 100)
-  setupHoverCursor()
+  onScroll()
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+  gsap.registerPlugin(ScrollTrigger)
+  animationContext = gsap.context(() => {
+    ScrollTrigger.batch('.reveal', {
+      start: 'top 88%',
+      once: true,
+      onEnter: elements => gsap.fromTo(elements, {
+        autoAlpha: 0,
+        y: 22,
+      }, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.075,
+        ease: 'power3.out',
+        overwrite: true,
+      }),
+    })
+
+    gsap.fromTo('.hero-art', {
+      autoAlpha: 0,
+      scale: 0.92,
+    }, {
+      autoAlpha: 1,
+      scale: 1,
+      duration: 1.3,
+      delay: 0.15,
+      ease: 'power3.out',
+    })
+
+    gsap.to('.hero-art', {
+      yPercent: -7,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 0.8,
+      },
+    })
+  })
 })
 
 onUnmounted(() => {
-  document.removeEventListener('mousemove', onMouseMove)
   window.removeEventListener('scroll', onScroll)
-  cancelAnimationFrame(animId)
+  animationContext?.revert()
 })
 </script>
-
-<style scoped>
-#app-root {
-  min-height: 100vh;
-}
-
-
-</style>

@@ -1,53 +1,53 @@
 <template>
   <section id="about" class="section-wrapper bg-dark-2">
     <div class="container section-pad">
-      <div class="section-header">
-        <span class="section-label reveal">The Story</span>
-        <h2 class="section-title reveal reveal-delay-1">About Me</h2>
-        <div class="gold-divider reveal reveal-delay-2" />
+      <div class="section-header reveal">
+        <span class="section-label">The Story</span>
+        <h2 class="section-title">About Me</h2>
+        <div class="gold-divider" />
       </div>
 
       <div class="about-grid">
-        <!-- Left -->
-        <div class="about-left">
+        <div class="about-main">
+          <p class="about-index reveal">01 <span>— A little about me</span></p>
           <h3 class="about-sub reveal">
-            A Frontend Developer who crafts<br />
-            <span class="gold-text">digital experiences</span>
+            Thoughtful code.<br />
+            <span class="gold-text">Meaningful experiences.</span>
           </h3>
-          <p class="about-text reveal reveal-delay-1">
+          <p class="about-text reveal">
             I'm a passionate frontend developer specializing in the Vue.js and Nuxt.js
             ecosystem. I take pride in writing clean, scalable, reusable code that
             solves real business problems.
           </p>
-          <p class="about-text reveal reveal-delay-2">
+          <p class="about-text reveal">
             From building enterprise systems at the Egyptian Army Programming Center
             to developing full-featured web apps at Cairo House Development, I bring
             technical rigor and creative thinking to every project.
           </p>
 
           <div class="stats-grid">
-            <div class="stat-card reveal reveal-delay-1" v-for="s in stats" :key="s.label">
-              <div class="stat-num">{{ s.num }}</div>
-              <div class="stat-label">{{ s.label }}</div>
+            <div class="stat-card reveal" v-for="stat in stats" :key="stat.label">
+              <span class="stat-num">{{ stat.num }}</span>
+              <span class="stat-label">{{ stat.label }}</span>
             </div>
           </div>
         </div>
 
-        <!-- Right -->
-        <div class="about-right">
-          <div
-            v-for="(info, i) in infoRows"
-            :key="info.label"
-            class="info-row reveal hover-target"
-            :class="`reveal-delay-${i}`"
-          >
-            <span class="info-icon">◈</span>
-            <div>
-              <div class="info-label">{{ info.label }}</div>
-              <div class="info-val">{{ info.value }}</div>
-            </div>
+        <aside class="about-aside" aria-label="Personal details">
+          <div class="aside-heading reveal">
+            <span>At a glance</span>
+            <span aria-hidden="true">KH / PROFILE</span>
           </div>
-        </div>
+          <dl class="info-list">
+            <div v-for="info in infoRows" :key="info.label" class="info-row reveal">
+              <dt>{{ info.label }}</dt>
+              <dd>
+                <a v-if="info.href" :href="info.href">{{ info.value }}</a>
+                <span v-else>{{ info.value }}</span>
+              </dd>
+            </div>
+          </dl>
+        </aside>
       </div>
     </div>
   </section>
@@ -55,145 +55,191 @@
 
 <script setup>
 const stats = [
-  { num: '1.5+',   label: 'Years Experience' },
-  { num: '9+',   label: 'Projects Shipped' },
-  { num: '2',    label: 'Companies' },
+  { num: '1.5+', label: 'Years Experience' },
+  { num: '9+', label: 'Projects Shipped' },
+  { num: '2', label: 'Companies' },
   { num: '100%', label: 'Dedication' },
 ]
 
 const infoRows = [
-  { label: 'Full Name',  value: 'Khaled Hassan Ahmed' },
+  { label: 'Full Name', value: 'Khaled Hassan Ahmed' },
   { label: 'Date of Birth', value: 'January 19, 2002' },
-  { label: 'Location',   value: 'Cairo, Egypt' },
-  { label: 'Education',  value: 'B.Sc. Computer Science, University of Zagazig' },
-  { label: 'Email',      value: 'khaled.h.almass@gmail.com' },
-  { label: 'Phone',      value: '(+20) 1284456019' },
-  { label: 'Languages',  value: 'Arabic (Fluent) · English (Very Good)' },
+  { label: 'Location', value: 'Cairo, Egypt' },
+  { label: 'Education', value: 'B.Sc. Computer Science, University of Zagazig' },
+  { label: 'Email', value: 'khaled.h.almass@gmail.com', href: 'mailto:khaled.h.almass@gmail.com' },
+  { label: 'Phone', value: '(+20) 1284456019', href: 'tel:+201284456019' },
+  { label: 'Languages', value: 'Arabic (Fluent) · English (Very Good)' },
 ]
 </script>
 
 <style scoped>
-.bg-dark-2 { background: var(--dark-2); }
-
 .about-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.75fr);
+  gap: clamp(3rem, 9vw, 8rem);
   align-items: start;
 }
 
-.about-sub {
-  font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
-  line-height: 1.35;
-  margin-bottom: 1.5rem;
+.about-index {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.8rem;
+  color: var(--gold);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
 }
 
-.gold-text {
-  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.about-index span {
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.about-sub {
+  margin-bottom: 1.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3.2vw, 2.45rem);
+  font-weight: 500;
+  line-height: 1.34;
 }
 
 .about-text {
-  font-size: 0.93rem;
-  color: var(--text-60);
-  line-height: 1.9;
-  margin-bottom: 1.2rem;
+  max-width: 39rem;
+  margin-bottom: 1.15rem;
+  color: var(--text-soft);
+  font-size: 0.91rem;
   font-weight: 300;
+  line-height: 1.95;
 }
 
-/* ─── Stats ─── */
 .stats-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 2.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 2.8rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.16);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.16);
 }
 
 .stat-card {
-  padding: 1.5rem;
-  border: 0.5px solid rgba(201,168,76,0.14);
-  background: rgba(201,168,76,0.025);
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.3s, background 0.3s;
-}
-
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-.stat-card:hover {
-  border-color: rgba(201,168,76,0.3);
-  background: rgba(201,168,76,0.05);
+  display: flex;
+  min-height: 6rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1rem 0.7rem 1rem 0;
 }
 
 .stat-num {
+  color: var(--gold-light);
   font-family: var(--font-display);
-  font-size: 2.4rem;
-  color: var(--gold);
-  font-weight: 700;
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
   line-height: 1;
 }
 
 .stat-label {
-  font-size: 0.68rem;
   color: var(--muted);
-  letter-spacing: 0.12em;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-top: 0.4rem;
 }
 
-/* ─── Info rows ─── */
-.about-right { display: flex; flex-direction: column; gap: 0.75rem; }
+.about-aside {
+  padding: 1.6rem 1.8rem;
+  border: 1px solid rgba(201, 168, 76, 0.14);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.025), rgba(201, 168, 76, 0.018));
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.18);
+}
+
+.aside-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.16);
+  color: var(--gold-light);
+  font-family: var(--font-display);
+  font-size: 0.83rem;
+}
+
+.aside-heading span:last-child {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+}
+
+.info-list {
+  display: grid;
+}
 
 .info-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  border: 0.5px solid rgba(201,168,76,0.08);
-  background: rgba(201,168,76,0.018);
-  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+  display: grid;
+  grid-template-columns: minmax(90px, 0.62fr) minmax(0, 1.38fr);
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
 }
 
-.info-row:hover {
-  border-color: rgba(201,168,76,0.28);
-  background: rgba(201,168,76,0.04);
-  transform: translateX(4px);
+.info-row:last-child {
+  border-bottom: 0;
 }
 
-.info-icon {
-  color: var(--gold);
-  flex-shrink: 0;
-  margin-top: 3px;
-  font-size: 0.9rem;
-}
-
-.info-label {
-  font-size: 0.62rem;
+.info-row dt {
   color: var(--muted);
-  letter-spacing: 0.18em;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 0.2rem;
 }
 
-.info-val {
-  font-size: 0.88rem;
-  color: var(--text);
+.info-row dd {
+  color: #d3cec2;
+  font-size: 0.77rem;
   font-weight: 300;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.info-row a {
+  text-decoration-color: rgba(201, 168, 76, 0.28);
+  text-underline-offset: 3px;
+}
+
+.info-row a:hover {
+  color: var(--gold-light);
 }
 
 @media (max-width: 900px) {
   .about-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
+  }
+
+  .about-aside {
+    max-width: 680px;
+  }
+}
+
+@media (max-width: 540px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stat-card:nth-child(odd) {
+    border-right: 1px solid rgba(201, 168, 76, 0.12);
+  }
+
+  .stat-card:nth-child(even) {
+    padding-left: 1rem;
+  }
+
+  .about-aside {
+    padding: 1.2rem;
+  }
+
+  .info-row {
+    grid-template-columns: 90px minmax(0, 1fr);
   }
 }
 </style>

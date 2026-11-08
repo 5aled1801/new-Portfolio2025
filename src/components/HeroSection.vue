@@ -1,309 +1,457 @@
 <template>
   <section id="hero" class="section-wrapper hero">
-    <!-- Ambient rings -->
-    <div class="hero-rings" aria-hidden="true">
-      <div class="ring ring-1" />
-      <div class="ring ring-2" />
-      <div class="ring ring-3" />
-    </div>
+    <div class="hero-atmosphere" aria-hidden="true" />
+    <div class="hero-layout container">
+      <div class="hero-copy">
+        <p class="hero-kicker reveal">
+          <span class="kicker-line" />
+          Frontend engineer · Cairo, Egypt
+        </p>
 
-    <!-- Floating gold particles -->
-    <div class="particles" aria-hidden="true">
-      <span v-for="i in 20" :key="i" class="particle" :style="particleStyle(i)" />
-    </div>
-
-    <div class="hero-content">
-      <!-- Left: text -->
-      <div class="hero-left">
-        <p class="hero-label reveal">✦ Available for opportunities</p>
-
-        <h1 class="hero-name reveal reveal-delay-1">
-          <span class="name-line">Khaled</span>
-          <span class="name-line gold-text">Hassan</span>
+        <h1 class="hero-name reveal">
+          <span>Khaled</span>
+          <span class="gold-text">Hassan</span>
         </h1>
 
-        <p class="hero-role reveal reveal-delay-2">
-          Frontend Developer
-          <span class="role-sep">·</span>
-          Vue.js Specialist
+        <p class="hero-role reveal">
+          Frontend Developer <span aria-hidden="true">/</span> Vue.js &amp; React.js
         </p>
 
-        <p class="hero-desc reveal reveal-delay-3">
-          Crafting high-performance, scalable web experiences
-          with Vue.js, Nuxt.js &amp; modern frontend technologies.
-          B.Sc. Computer Science · Cairo, Egypt.
+        <p class="hero-intro reveal">
+          I build thoughtful, high-performance web experiences — bringing clean
+          engineering and an eye for detail to every interface.
         </p>
 
-        <div class="hero-cta reveal reveal-delay-4">
-          <a href="#projects" class="btn-gold" @click.prevent="scrollTo('projects')">
-            <span>View My Work</span>
+        <div class="hero-actions reveal">
+          <a class="btn-gold" href="#projects" @click.prevent="scrollTo('projects')">
+            View Projects
+            <svg class="btn-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M3.5 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.4" />
+            </svg>
           </a>
-          <a href="#contact" class="btn-outline" @click.prevent="scrollTo('contact')">Get In Touch</a>
+          <a
+            class="btn-outline"
+            href="/Khaled%20Hassan%20CV.pdf"
+            download="Khaled-Hassan-Frontend-Developer-CV.pdf"
+            aria-label="Download Khaled Hassan's CV as a PDF"
+          >
+            Download CV
+            <svg class="btn-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M10 2.75v9m0 0 3.5-3.5M10 11.75l-3.5-3.5M4 13.5v3h12v-3" stroke="currentColor" stroke-width="1.4" />
+            </svg>
+          </a>
+          <a class="hero-contact-link" href="#contact" @click.prevent="scrollTo('contact')">
+            Contact me <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="hero-footnote reveal">
+          <span class="availability-dot" aria-hidden="true" />
+          Open to meaningful opportunities
         </div>
       </div>
 
-      <!-- Right: code block -->
-      <div class="code-block reveal reveal-delay-5">
-        <div class="code-dots">
-          <span /><span /><span />
+      <div class="hero-art" aria-hidden="true">
+        <HeroSculpture v-if="useWebGl" class="hero-scene" />
+        <div v-else class="hero-scene hero-static">
+          <div class="hero-static-orbit hero-static-orbit-one" />
+          <div class="hero-static-orbit hero-static-orbit-two" />
+          <div class="hero-static-core" />
         </div>
-        <pre class="code-body"><span class="c-kw">const</span> <span class="c-var">developer</span> = {
-  <span class="c-key">name</span>:      <span class="c-str">"Khaled Hassan"</span>,
-  <span class="c-key">role</span>:      <span class="c-str">"Frontend Developer"</span>,
-  <span class="c-key">stack</span>:     [<span class="c-str">"Vue 3"</span>, <span class="c-str">"Nuxt.js"</span>, <span class="c-str">"Pinia"</span>],
-  <span class="c-key">available</span>: <span class="c-bool">true</span>
-};</pre>
+        <div class="art-caption">
+          <span>KH</span>
+          <span>DESIGN · ENGINEERING · DETAIL</span>
+        </div>
       </div>
     </div>
 
-    <!-- Scroll cue -->
-    <div class="scroll-cue reveal reveal-delay-5">
-      <span class="scroll-text">Scroll</span>
-      <div class="scroll-line" />
-    </div>
+    <a class="scroll-cue" href="#about" aria-label="Scroll to About section">
+      <span>Scroll to explore</span>
+      <span class="scroll-cue-line" aria-hidden="true" />
+    </a>
+    <span class="hero-index" aria-hidden="true">01 / 06</span>
   </section>
 </template>
 
 <script setup>
-function scrollTo(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+import { defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
+
+const HeroSculpture = defineAsyncComponent(() => import('./HeroSculpture.vue'))
+const useWebGl = ref(false)
+const desktopPointer = window.matchMedia('(min-width: 761px) and (hover: hover) and (pointer: fine)')
+
+function updateRenderingMode() {
+  useWebGl.value = desktopPointer.matches
 }
 
-function particleStyle(i) {
-  const x = Math.random() * 100
-  const y = Math.random() * 100
-  const delay = (i * 0.4) % 4
-  const dur = 4 + (i % 5)
-  const size = 1 + (i % 3)
-  return {
-    left: x + '%',
-    top:  y + '%',
-    width: size + 'px',
-    height: size + 'px',
-    animationDelay: delay + 's',
-    animationDuration: dur + 's',
-  }
+function scrollTo(id) {
+  const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+  document.getElementById(id)?.scrollIntoView({ behavior })
 }
+
+onMounted(() => {
+  updateRenderingMode()
+  desktopPointer.addEventListener('change', updateRenderingMode)
+})
+
+onUnmounted(() => desktopPointer.removeEventListener('change', updateRenderingMode))
 </script>
 
 <style scoped>
 .hero {
-  min-height: 100vh;
+  min-height: max(720px, 100svh);
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 6rem 6% 5rem;
-  overflow: hidden;
-  position: relative;
-  background: var(--dark);
+  overflow: clip;
+  padding: 8rem 0 7rem;
+  background:
+    radial-gradient(ellipse at 78% 45%, rgba(201, 168, 76, 0.09), transparent 32rem),
+    linear-gradient(115deg, #050505 20%, #090908 68%, #070706);
 }
 
-/* ─── Ambient rings ─── */
-.hero-rings { position: absolute; inset: 0; pointer-events: none; }
-.ring {
+.hero::after {
   position: absolute;
-  border: 1px solid rgba(201,168,76,0.06);
-  border-radius: 50%;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-}
-.ring-1 { width: 500px; height: 500px; animation: rotateSlow 30s linear infinite; }
-.ring-2 { width: 750px; height: 750px; animation: rotateSlow 45s linear infinite reverse; }
-.ring-3 { width: 1050px; height: 1050px; animation: rotateSlow 60s linear infinite; }
-
-@keyframes rotateSlow {
-  from { transform: translate(-50%,-50%) rotate(0deg); }
-  to   { transform: translate(-50%,-50%) rotate(360deg); }
+  z-index: -1;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 100% 72px;
+  content: "";
+  mask-image: linear-gradient(transparent, black 20%, transparent 90%);
+  pointer-events: none;
 }
 
-/* ─── Particles ─── */
-.particles { position: absolute; inset: 0; pointer-events: none; }
-.particle {
+.hero-atmosphere {
   position: absolute;
-  background: var(--gold);
+  z-index: -1;
+  top: 8%;
+  right: 4%;
+  width: min(65vw, 780px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(201, 168, 76, 0.055);
   border-radius: 50%;
-  opacity: 0;
-  animation: floatParticle linear infinite;
-}
-@keyframes floatParticle {
-  0%   { opacity: 0; transform: translateY(0); }
-  20%  { opacity: 0.6; }
-  80%  { opacity: 0.2; }
-  100% { opacity: 0; transform: translateY(-80px); }
+  box-shadow:
+    0 0 0 5rem rgba(201, 168, 76, 0.012),
+    0 0 0 10rem rgba(201, 168, 76, 0.009);
+  pointer-events: none;
 }
 
-/* ─── Content: two-column grid ─── */
-.hero-content {
+.hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.96fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 5.5rem);
+}
+
+.hero-copy {
   position: relative;
   z-index: 2;
-  width: 100%;
-  max-width: 1100px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  padding-block: 2rem;
+}
+
+.hero-kicker {
+  display: flex;
   align-items: center;
-}
-
-/* Left column */
-.hero-left {
-  text-align: left;
-}
-
-.hero-label {
-  font-size: 0.68rem;
-  letter-spacing: 0.45em;
-  text-transform: uppercase;
-  color: var(--gold);
+  gap: 0.8rem;
   margin-bottom: 2rem;
+  color: var(--text-soft);
+  font-size: 0.68rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.kicker-line {
+  width: 2rem;
+  height: 1px;
+  background: var(--gold);
 }
 
 .hero-name {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  margin-left: -0.07em;
   font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 6.5rem);
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: 0.04em;
-  margin-bottom: 1.25rem;
-}
-
-.name-line { display: block; }
-
-.gold-text {
-  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 50%, var(--gold-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: clamp(4rem, 8.5vw, 8rem);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 0.94;
 }
 
 .hero-role {
-  font-size: clamp(0.72rem, 1.4vw, 0.9rem);
-  color: var(--muted);
-  letter-spacing: 0.25em;
+  margin-top: 1.6rem;
+  color: #ddd8ca;
+  font-size: clamp(0.73rem, 1.2vw, 0.92rem);
+  font-weight: 400;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  margin-bottom: 1.75rem;
 }
 
-.role-sep { color: var(--gold); margin: 0 0.75em; }
+.hero-role span {
+  padding-inline: 0.45rem;
+  color: var(--gold);
+}
 
-.hero-desc {
-  max-width: 460px;
-  margin: 0 0 2.25rem;
-  font-size: 0.93rem;
-  line-height: 1.85;
-  color: var(--text-60);
+.hero-intro {
+  max-width: 32rem;
+  margin-top: 1.3rem;
+  color: var(--text-soft);
+  font-size: 0.96rem;
   font-weight: 300;
+  line-height: 1.9;
 }
 
-.hero-cta {
+.hero-actions {
   display: flex;
-  gap: 1rem;
+  align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 0;
+  gap: 0.75rem;
+  margin-top: 2rem;
 }
 
-/* ─── Code Block (right column) ─── */
-.code-block {
-  display: block;
-  background: rgba(255,255,255,0.02);
-  border: 0.5px solid rgba(201,168,76,0.12);
-  text-align: left;
-  padding: 2rem 2rem;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
+.hero-contact-link {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.3rem;
+  color: var(--text-soft);
+  font-size: 0.73rem;
+  letter-spacing: 0.09em;
+  text-decoration: none;
+  transition: color 200ms ease;
 }
 
-.code-block::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+.hero-contact-link:hover {
+  color: var(--gold-light);
 }
 
-.code-dots {
-  display: flex;
-  gap: 5px;
-  margin-bottom: 0.75rem;
+.hero-footnote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2.4rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
 }
-.code-dots span {
-  display: block;
-  width: 7px; height: 7px;
+
+.availability-dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: rgba(201,168,76,0.2);
-}
-.code-dots span:first-child { background: #ff5f57; }
-.code-dots span:nth-child(2) { background: #febc2e; }
-.code-dots span:last-child { background: #28c840; }
-
-.code-body {
-  font-family: 'Courier New', monospace;
-  font-size: 0.8rem;
-  line-height: 1.7;
-  color: var(--text-60);
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(201, 168, 76, 0.65);
 }
 
-.c-kw   { color: #C792EA; }
-.c-var  { color: #82AAFF; }
-.c-key  { color: var(--gold); }
-.c-str  { color: #C3E88D; }
-.c-bool { color: #F78C6C; }
+.hero-art {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  justify-self: end;
+  transform-origin: center;
+}
 
-/* ─── Scroll cue ─── */
+.hero-scene {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.hero-static {
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.12), transparent 64%);
+}
+
+.hero-static-core {
+  position: absolute;
+  width: 37%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(234, 209, 141, 0.85);
+  border-radius: 42% 58% 55% 45%;
+  background:
+    radial-gradient(ellipse at 32% 28%, rgba(255, 232, 161, 0.72), transparent 12%),
+    radial-gradient(ellipse at 36% 35%, #b68b34 0%, #503b17 48%, #11100d 78%);
+  box-shadow:
+    inset -20px -20px 36px rgba(0, 0, 0, 0.65),
+    0 0 70px rgba(201, 168, 76, 0.18);
+  transform: rotate(-24deg);
+}
+
+.hero-static-orbit {
+  position: absolute;
+  width: 74%;
+  height: 37%;
+  border: 1px solid rgba(201, 168, 76, 0.48);
+  border-radius: 50%;
+  transform: rotate(-32deg);
+}
+
+.hero-static-orbit-two {
+  width: 77%;
+  height: 29%;
+  border-color: rgba(234, 209, 141, 0.25);
+  transform: rotate(55deg);
+}
+
+.art-caption {
+  position: absolute;
+  right: 8%;
+  bottom: 8%;
+  left: 8%;
+  display: flex;
+  justify-content: space-between;
+  color: rgba(234, 226, 210, 0.48);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+}
+
+.art-caption span:first-child {
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+}
+
 .scroll-cue {
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 2.3rem;
   left: 50%;
-  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  z-index: 2;
-}
-
-.scroll-text {
-  font-size: 0.6rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
+  gap: 0.85rem;
   color: var(--muted);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transform: translateX(-50%);
 }
 
-.scroll-line {
-  width: 1px;
-  height: 55px;
-  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-  animation: scrollPulse 2.2s ease-in-out infinite;
+.scroll-cue-line {
+  width: 2.8rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
 }
 
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.2; }
-  50%       { opacity: 1; }
+.hero-index {
+  position: absolute;
+  right: 3rem;
+  bottom: 2.3rem;
+  color: rgba(234, 226, 210, 0.38);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
 }
 
-/* ─── Responsive ─── */
 @media (max-width: 900px) {
   .hero {
-    text-align: center;
-    padding: 6rem 5% 6rem;
+    min-height: 100svh;
+    padding-block: 7rem 6rem;
   }
 
-  .hero-content {
+  .hero-layout {
+    grid-template-columns: 1fr 0.82fr;
+    gap: 0.5rem;
+  }
+
+  .hero-name {
+    font-size: clamp(3.7rem, 10vw, 6.4rem);
+  }
+
+  .hero-art {
+    width: 115%;
+    margin-left: -10%;
+  }
+
+  .art-caption {
+    right: 6%;
+    left: 6%;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    min-height: auto;
+    min-height: 100svh;
+    padding-block: 7.5rem 6rem;
+  }
+
+  .hero-layout {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 0;
   }
 
-  .hero-left { text-align: center; }
+  .hero-copy {
+    padding-block: 0;
+  }
 
-  .hero-name { align-items: center; }
+  .hero-kicker {
+    margin-bottom: 1.5rem;
+    font-size: 0.6rem;
+  }
 
-  .hero-desc { margin: 0 auto 2rem; }
+  .hero-name {
+    font-size: clamp(3.7rem, 16vw, 5.8rem);
+  }
 
-  .hero-cta { justify-content: center; }
+  .hero-role {
+    margin-top: 1.25rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+  }
 
-  .code-block { max-width: 480px; margin: 0 auto; }
+  .hero-intro {
+    max-width: 32rem;
+    font-size: 0.87rem;
+  }
+
+  .hero-actions {
+    gap: 0.55rem;
+  }
+
+  .hero-contact-link {
+    flex-basis: 100%;
+    min-height: 2.5rem;
+    margin-left: 0;
+  }
+
+  .hero-footnote {
+    margin-top: 1.5rem;
+    font-size: 0.62rem;
+  }
+
+  .hero-art {
+    width: min(83vw, 370px);
+    margin: -1rem auto 0;
+  }
+
+  .art-caption {
+    bottom: 9%;
+    font-size: 0.46rem;
+  }
+
+  .scroll-cue {
+    bottom: 1.4rem;
+    left: 1.2rem;
+    transform: none;
+  }
+
+  .hero-index {
+    right: 1.2rem;
+    bottom: 1.4rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-actions .btn-gold,
+  .hero-actions .btn-outline {
+    padding-inline: 0.75rem;
+    font-size: 0.59rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-art {
+    transform: none !important;
+  }
 }
 </style>

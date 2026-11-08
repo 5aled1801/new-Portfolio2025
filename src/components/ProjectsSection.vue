@@ -1,40 +1,54 @@
 <template>
   <section id="projects" class="section-wrapper bg-dark">
     <div class="container section-pad">
-      <div class="section-header">
-        <span class="section-label reveal">The Work</span>
-        <h2 class="section-title reveal reveal-delay-1">Projects</h2>
-        <div class="gold-divider reveal reveal-delay-2" />
+      <div class="section-header reveal">
+        <span class="section-label">The Work</span>
+        <h2 class="section-title">Selected projects</h2>
+        <div class="gold-divider" />
+      </div>
+
+      <div class="projects-intro reveal">
+        <p>A selection of web experiences, built with care from first interaction to final detail.</p>
+        <span>10 PROJECTS</span>
       </div>
 
       <div class="projects-grid">
         <article
-          v-for="(proj, i) in projects"
-          :key="proj.title"
-          class="project-card hover-target reveal"
-          :class="`reveal-delay-${i % 3}`"
-          @click="openLink(proj.link)"
+          v-for="(project, index) in projects"
+          :key="project.title"
+          class="project-card reveal"
+          :class="{ featured: index < 2 }"
+          @pointermove="tiltCard"
+          @pointerleave="resetCard"
         >
-          <div class="card-top">
-            <span class="proj-num">{{ String(i + 1).padStart(2, '0') }} ——</span>
-            <a :href="proj.link" target="_blank" rel="noopener" class="ext-icon" @click.stop>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg>
-            </a>
+          <div class="project-art" aria-hidden="true">
+            <div class="art-orbit" />
+            <div class="art-arch" />
+            <div class="art-glow" />
+            <span class="art-index">0{{ String(index + 1).padStart(2, '0') }}</span>
+            <span class="art-caption">Selected work <span>—</span> {{ project.tags[0] }}</span>
           </div>
 
-          <h3 class="proj-title">{{ proj.title }}</h3>
-          <p class="proj-desc">{{ proj.desc }}</p>
-
-          <div class="proj-tags">
-            <span v-for="tag in proj.tags" :key="tag" class="proj-tag">{{ tag }}</span>
+          <div class="project-meta">
+            <span>{{ index < 2 ? 'Featured project' : 'Web project' }}</span>
+            <span class="project-mark" aria-hidden="true">↗</span>
           </div>
-
-          <a :href="proj.link" target="_blank" rel="noopener" class="proj-link" @click.stop>
-            Live Demo →
+          <h3 class="proj-title">{{ project.title }}</h3>
+          <p class="proj-desc">{{ project.desc }}</p>
+          <div class="proj-tags" aria-label="Technologies">
+            <span v-for="tag in project.tags" :key="tag" class="proj-tag">{{ tag }}</span>
+          </div>
+          <a
+            :href="project.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="proj-link"
+            :aria-label="`Visit ${project.title} live demo (opens in a new tab)`"
+          >
+            View live demo
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4.5 10h11m-4.5-4.5L15.5 10 11 14.5" stroke="currentColor" stroke-width="1.4" />
+            </svg>
           </a>
         </article>
       </div>
@@ -44,6 +58,12 @@
 
 <script setup>
 const projects = [
+  {
+    title: 'Bundle builder App',
+    desc: 'An interactive multi-step Bundle Builder that allows users to create customized product bundles through a guided selection process. Built with React, Redux Toolkit, and Tailwind CSS, featuring dynamic product selection, centralized state management, and a real-time review panel.',
+    tags: ['React 19 + Vite', 'Redux Toolkit ', 'Tailwind ', 'lucide-react for icons'],
+    link: 'https://bundlebuilder-drab.vercel.app/',
+  },
   {
     title: 'E-Commerce App',
     desc: 'Dynamic e-commerce web application with cart management, product browsing, and real-time state management using Pinia.',
@@ -100,118 +120,270 @@ const projects = [
   },
 ]
 
-function openLink(url) {
-  window.open(url, '_blank', 'noopener')
+function tiltCard(event) {
+  if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+  const card = event.currentTarget
+  const bounds = card.getBoundingClientRect()
+  const relativeX = (event.clientX - bounds.left) / bounds.width - 0.5
+  const relativeY = (event.clientY - bounds.top) / bounds.height - 0.5
+  card.style.setProperty('--tilt-x', `${relativeY * -3}deg`)
+  card.style.setProperty('--tilt-y', `${relativeX * 3}deg`)
+  card.style.setProperty('--glow-x', `${(relativeX + 0.5) * 100}%`)
+  card.style.setProperty('--glow-y', `${(relativeY + 0.5) * 100}%`)
+}
+
+function resetCard(event) {
+  event.currentTarget.style.setProperty('--tilt-x', '0deg')
+  event.currentTarget.style.setProperty('--tilt-y', '0deg')
 }
 </script>
 
 <style scoped>
-.bg-dark { background: var(--dark); }
+.projects-intro {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+}
+
+.projects-intro span {
+  flex: 0 0 auto;
+  color: var(--gold);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+}
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
 }
 
 .project-card {
-  background: var(--dark-3);
-  border: 0.5px solid rgba(201,168,76,0.09);
-  padding: 2rem;
-  cursor: none;
   position: relative;
-  overflow: hidden;
-  transition: border-color 0.4s, background 0.4s, transform 0.4s var(--ease-cinema);
   display: flex;
+  min-width: 0;
   flex-direction: column;
-}
-
-.project-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201,168,76,0), transparent);
-  transition: background 0.4s;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.13);
+  background:
+    radial-gradient(ellipse at var(--glow-x, 50%) var(--glow-y, 0%), rgba(201, 168, 76, 0.075), transparent 55%),
+    linear-gradient(145deg, #11110f, #090908 80%);
+  transform: perspective(1100px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition:
+    border-color 300ms ease,
+    background-color 300ms ease,
+    transform 220ms ease-out;
 }
 
 .project-card:hover {
-  border-color: rgba(201,168,76,0.28);
-  background: var(--dark-4);
-  transform: translateY(-5px);
+  border-color: rgba(201, 168, 76, 0.42);
 }
 
-.project-card:hover::before {
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+.project-card.featured {
+  grid-column: span 1;
 }
 
-.card-top {
+.project-art {
+  position: relative;
   display: flex;
-  align-items: center;
+  min-height: 200px;
+  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin: -1px -1px 1.5rem;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.11);
+  background:
+    radial-gradient(ellipse at 68% 42%, rgba(201, 168, 76, 0.19), transparent 28%),
+    linear-gradient(120deg, #15140f, #090908 64%);
 }
 
-.proj-num {
+.project-card.featured .project-art {
+  min-height: 250px;
+}
+
+.project-art::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(130deg, transparent 40%, rgba(255, 255, 255, 0.035), transparent 70%);
+  content: "";
+  pointer-events: none;
+}
+
+.art-orbit {
+  position: absolute;
+  top: 50%;
+  left: 58%;
+  width: 43%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(201, 168, 76, 0.38);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 35px rgba(201, 168, 76, 0.08);
+}
+
+.art-orbit::before,
+.art-orbit::after {
+  position: absolute;
+  inset: 13%;
+  border: 1px solid rgba(201, 168, 76, 0.21);
+  border-radius: 50%;
+  content: "";
+}
+
+.art-orbit::after {
+  inset: 28%;
+  background: radial-gradient(circle at 34% 30%, #e8cf84, #80632a 24%, #12110e 70%);
+  box-shadow: 0 0 26px rgba(201, 168, 76, 0.12);
+}
+
+.art-arch {
+  position: absolute;
+  top: 50%;
+  left: 58%;
+  width: 61%;
+  aspect-ratio: 1.7;
+  border: 1px solid rgba(234, 209, 141, 0.14);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(-24deg);
+}
+
+.art-glow {
+  position: absolute;
+  top: 50%;
+  left: 58%;
+  width: 24%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(201, 168, 76, 0.08);
+  filter: blur(26px);
+  transform: translate(-50%, -50%);
+}
+
+.art-index {
+  z-index: 1;
+  color: rgba(234, 209, 141, 0.83);
   font-family: var(--font-display);
-  font-size: 0.68rem;
-  color: rgba(201,168,76,0.28);
-  letter-spacing: 0.18em;
+  font-size: 1rem;
 }
 
-.ext-icon {
+.art-caption {
+  z-index: 1;
   color: var(--muted);
-  display: flex;
-  align-items: center;
-  transition: color 0.3s, transform 0.3s;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
-.ext-icon:hover { color: var(--gold); transform: translate(2px, -2px); }
+
+.art-caption span {
+  padding-inline: 0.3rem;
+  color: var(--gold);
+}
+
+.project-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.7rem;
+  color: var(--gold);
+  font-size: 0.59rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.project-mark {
+  color: rgba(201, 168, 76, 0.6);
+  font-size: 0.9rem;
+}
 
 .proj-title {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.6rem;
   color: var(--text);
-  letter-spacing: 0.02em;
+  font-family: var(--font-display);
+  font-size: clamp(1.12rem, 2.2vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .proj-desc {
-  font-size: 0.83rem;
-  color: var(--text-40);
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
-  font-weight: 300;
   flex: 1;
+  margin-bottom: 1.3rem;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.8;
 }
 
 .proj-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-bottom: 1.5rem;
+  gap: 0.4rem;
+  margin-bottom: 1.3rem;
 }
 
 .proj-tag {
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  color: rgba(201,168,76,0.65);
-  border: 0.5px solid rgba(201,168,76,0.18);
-  padding: 0.2rem 0.65rem;
-  text-transform: uppercase;
+  max-width: 100%;
+  padding: 0.28rem 0.5rem;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  color: rgba(234, 209, 141, 0.75);
+  font-size: 0.57rem;
+  letter-spacing: 0.045em;
+  overflow-wrap: anywhere;
 }
 
 .proj-link {
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  color: var(--gold);
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
   text-decoration: none;
   text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: gap 0.3s var(--ease-cinema), opacity 0.3s;
-  margin-top: auto;
+  transition: color 220ms ease, gap 220ms var(--ease-cinema);
 }
-.proj-link:hover { gap: 0.75rem; opacity: 0.8; }
+
+.proj-link svg {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 220ms ease;
+}
+
+.proj-link:hover {
+  gap: 0.85rem;
+  color: var(--gold-light);
+}
+
+.proj-link:hover svg {
+  transform: translateX(2px);
+}
+
+@media (max-width: 700px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card.featured {
+    grid-column: auto;
+  }
+
+  .project-art,
+  .project-card.featured .project-art {
+    min-height: 190px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transform: none !important;
+  }
+}
 </style>

@@ -1,31 +1,34 @@
 <template>
   <section id="skills" class="section-wrapper bg-dark">
     <div class="container section-pad">
-      <div class="section-header">
-        <span class="section-label reveal">The Craft</span>
-        <h2 class="section-title reveal reveal-delay-1">Skills &amp; Technologies</h2>
-        <div class="gold-divider reveal reveal-delay-2" />
+      <div class="section-header reveal">
+        <span class="section-label">The Craft</span>
+        <h2 class="section-title">Tools of the trade</h2>
+        <div class="gold-divider" />
       </div>
 
-      <div class="skills-wrapper">
-        <div
-          v-for="(cat, ci) in categories"
-          :key="cat.name"
-          class="skill-category"
-          :class="`reveal reveal-delay-${ci}`"
+      <div class="skills-intro reveal">
+        <p>Technologies I use to turn thoughtful ideas into dependable, polished products.</p>
+        <span>01 — 05</span>
+      </div>
+
+      <div class="skills-grid">
+        <article
+          v-for="(category, index) in categories"
+          :key="category.name"
+          class="skill-category reveal"
         >
-          <div class="cat-label">
-            <span>{{ cat.name }}</span>
-            <div class="cat-line" />
+          <div class="category-topline">
+            <span class="category-number">0{{ index + 1 }}</span>
+            <span class="category-mark" aria-hidden="true">✳</span>
           </div>
+          <h3>{{ category.name }}</h3>
           <div class="tags-wrap">
-            <span
-              v-for="skill in cat.skills"
-              :key="skill"
-              class="skill-tag hover-target"
-            >{{ skill }}</span>
+            <span v-for="skill in category.skills" :key="skill" class="skill-tag">
+              {{ skill }}
+            </span>
           </div>
-        </div>
+        </article>
       </div>
     </div>
   </section>
@@ -34,91 +37,158 @@
 <script setup>
 const categories = [
   {
-    name: 'Languages & Core',
+    name: 'Frontend Development',
     skills: ['JavaScript (ES6+)', 'HTML5', 'CSS3', 'Sass / SCSS'],
   },
   {
     name: 'Frameworks & Libraries',
-    skills: ['Vue.js 2', 'Vue.js 3', 'Nuxt.js', 'Vuex', 'Pinia', 'Vue Router', 'Vuelidate'],
+    skills: ['Vue.js 2', 'Vue.js 3', 'Nuxt.js', 'React 19', 'Vue Router', 'Vuelidate'],
   },
   {
-    name: 'UI & Component Libraries',
+    name: 'State Management',
+    skills: ['Vuex', 'Pinia', 'Redux Toolkit'],
+  },
+  {
+    name: 'Styling & UI',
     skills: ['Vuetify', 'Bootstrap', 'Bootstrap Vue', 'Tailwind CSS'],
   },
   {
-    name: 'Tools & Best Practices',
+    name: 'Tools & APIs',
     skills: ['REST API', 'Axios', 'Git', 'GitHub', 'OOP', 'SEO Optimization', 'Vite'],
   },
 ]
 </script>
 
 <style scoped>
-.bg-dark { background: var(--dark); }
+.skills-intro {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.16);
+  color: var(--text-soft);
+  font-size: 0.82rem;
+}
 
-.skills-wrapper {
-  max-width: 900px;
-  margin: 0 auto;
+.skills-intro span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .skill-category {
-  margin-bottom: 3rem;
+  grid-column: span 2;
+  min-height: 230px;
+  padding: 1.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.018), transparent 68%);
+  transition: background 250ms ease;
 }
 
-.cat-label {
+.skill-category:nth-last-child(-n + 2) {
+  grid-column: span 3;
+}
+
+.skill-category:hover {
+  background: linear-gradient(145deg, rgba(201, 168, 76, 0.065), transparent 75%);
+}
+
+.category-topline {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1.25rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.6rem;
 }
 
-.cat-label span {
-  font-size: 0.62rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
+.category-number {
   color: var(--gold);
-  white-space: nowrap;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
 }
 
-.cat-line {
-  flex: 1;
-  height: 0.5px;
-  background: linear-gradient(90deg, rgba(201,168,76,0.3), transparent);
+.category-mark {
+  color: rgba(201, 168, 76, 0.55);
+  font-size: 1rem;
+  transition: transform 450ms var(--ease-cinema);
+}
+
+.skill-category:hover .category-mark {
+  transform: rotate(45deg);
+}
+
+.skill-category h3 {
+  margin-bottom: 1.1rem;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(0.86rem, 1.5vw, 1.05rem);
+  font-weight: 500;
 }
 
 .tags-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .skill-tag {
-  display: inline-block;
-  padding: 0.5rem 1.1rem;
-  border: 0.5px solid rgba(201,168,76,0.18);
-  background: rgba(201,168,76,0.03);
-  font-size: 0.8rem;
-  color: var(--text-60);
-  letter-spacing: 0.04em;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.3s, color 0.3s, transform 0.3s;
-  cursor: default;
-}
-
-.skill-tag::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
+  padding: 0.36rem 0.62rem;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  color: var(--text-soft);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  transition: border-color 220ms ease, color 220ms ease, background 220ms ease;
 }
 
 .skill-tag:hover {
-  border-color: rgba(201,168,76,0.45);
+  border-color: rgba(201, 168, 76, 0.55);
+  background: rgba(201, 168, 76, 0.06);
   color: var(--gold-light);
-  transform: translateY(-2px);
 }
 
-.skill-tag:hover::before { opacity: 1; }
+@media (max-width: 760px) {
+  .skill-category,
+  .skill-category:nth-last-child(-n + 2) {
+    grid-column: span 3;
+    min-height: 200px;
+    padding: 1.2rem;
+  }
+
+  .skill-category:last-child {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 520px) {
+  .skills-intro {
+    align-items: flex-start;
+    font-size: 0.75rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skill-category,
+  .skill-category:nth-last-child(-n + 2),
+  .skill-category:last-child {
+    grid-column: auto;
+    min-height: auto;
+    padding: 1.25rem;
+  }
+
+  .category-topline {
+    margin-bottom: 1rem;
+  }
+}
 </style>
